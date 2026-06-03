@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter analyze *)",
+      "Bash(Select-String -Pattern \"warning|error\")",
+      "Bash(flutter run *)",
+      "Bash(flutter pub *)",
+      "WebFetch(domain:www.youtube.com)"
+    ]
+  }
+}
