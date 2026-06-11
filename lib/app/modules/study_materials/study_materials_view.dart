@@ -202,11 +202,11 @@ class _MaterialCard extends StatelessWidget {
 
   Color get _subjectColor {
     switch (material.subject) {
-      case 'Mathematics': return AppColors.primary;
-      case 'Science': return AppColors.secondary;
+      case 'Bengali': return AppColors.primary;
       case 'English': return AppColors.accentGreen;
-      case 'Social Science': return AppColors.accentOrange;
-      case 'Tamil': return const Color(0xFFFF4081);
+      case 'Political Science': return AppColors.secondary;
+      case 'History': return AppColors.accentOrange;
+      case 'Geography': return const Color(0xFFFFD700);
       default: return AppColors.textMuted;
     }
   }

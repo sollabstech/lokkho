@@ -21,7 +21,7 @@ class HomeController extends GetxController {
     VideoModel(
       id: 'qLNNH2xfcQY',
       title: 'Class 12 3rd Semester Human Geography: Population and Population Distribution',
-      subject: 'Social Science',
+      subject: 'Geography',
       thumbnailUrl: 'https://img.youtube.com/vi/qLNNH2xfcQY/hqdefault.jpg',
       videoUrl: 'https://www.youtube.com/watch?v=qLNNH2xfcQY',
       duration: '',
@@ -41,7 +41,7 @@ class HomeController extends GetxController {
     VideoModel(
       id: 'MOjXE4LUVx0',
       title: 'Class 12 3rd Semester Political Science Syllabus First Class | West Bengal Board',
-      subject: 'Social Science',
+      subject: 'Political Science',
       thumbnailUrl: 'https://img.youtube.com/vi/MOjXE4LUVx0/hqdefault.jpg',
       videoUrl: 'https://www.youtube.com/watch?v=MOjXE4LUVx0',
       duration: '',
@@ -51,7 +51,7 @@ class HomeController extends GetxController {
     VideoModel(
       id: '37D5kuiFogI',
       title: 'Class 10 1st Unit Test History Last Minute Suggestion | Madhyamik History Suggestion 2026',
-      subject: 'Social Science',
+      subject: 'History',
       thumbnailUrl: 'https://img.youtube.com/vi/37D5kuiFogI/hqdefault.jpg',
       videoUrl: 'https://www.youtube.com/watch?v=37D5kuiFogI',
       duration: '',

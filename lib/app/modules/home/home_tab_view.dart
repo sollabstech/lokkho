@@ -152,7 +152,7 @@ class HomeTabView extends GetView<HomeController> {
                     ),
                   ),
                   const Text(
-                    'Mathematics – Algebra',
+                    'Bengali – Prose & Poetry',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -562,14 +562,16 @@ class _SubjectTag extends StatelessWidget {
 
   Color get _color {
     switch (subject) {
-      case 'Mathematics':
+      case 'Bengali':
         return AppColors.primary;
-      case 'Science':
-        return AppColors.secondary;
       case 'English':
         return AppColors.accentGreen;
-      case 'Social Science':
+      case 'Political Science':
+        return AppColors.secondary;
+      case 'History':
         return AppColors.accentOrange;
+      case 'Geography':
+        return const Color(0xFFFFD700);
       default:
         return AppColors.textMuted;
     }

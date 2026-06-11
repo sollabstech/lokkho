@@ -124,12 +124,11 @@ class AppSizes {
 
 class AppSubjects {
   static const List<Map<String, dynamic>> subjects = [
-    {'name': 'Mathematics', 'icon': '🔢', 'color': Color(0xFF6C63FF)},
-    {'name': 'Science', 'icon': '🔬', 'color': Color(0xFF00D4FF)},
+    {'name': 'Bengali', 'icon': '🅱️', 'color': Color(0xFF6C63FF)},
     {'name': 'English', 'icon': '📚', 'color': Color(0xFF00E676)},
-    {'name': 'Tamil', 'icon': '🏛️', 'color': Color(0xFFFF6B35)},
-    {'name': 'Social Science', 'icon': '🌍', 'color': Color(0xFFFFD700)},
-    {'name': 'Computer Science', 'icon': '💻', 'color': Color(0xFFFF4081)},
+    {'name': 'Political Science', 'icon': '🏛️', 'color': Color(0xFF00D4FF)},
+    {'name': 'History', 'icon': '📜', 'color': Color(0xFFFF6B35)},
+    {'name': 'Geography', 'icon': '🌍', 'color': Color(0xFFFFD700)},
   ];
 
   static const List<String> classes = [
@@ -138,5 +137,5 @@ class AppSubjects {
   ];
 
   static const List<String> difficulties = ['Easy', 'Medium', 'Hard'];
-  static const List<String> mediums = ['English', 'Tamil'];
+  static const List<String> mediums = ['English', 'Bengali'];
 }
