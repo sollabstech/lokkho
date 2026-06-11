@@ -208,10 +208,10 @@ class _LogoRevealState extends State<_LogoReveal>
             ),
             child: const Center(
               child: Text(
-                'ল',
+                'লক্ষ্য',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 56,
+                  fontSize: 36,
                   fontWeight: FontWeight.w900,
                 ),
               ),
