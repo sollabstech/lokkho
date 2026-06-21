@@ -7,8 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../services/auth_service.dart';
 import '../../routes/app_routes.dart';
 
-const _whatsappNumber = '919384199108';
-const _phoneNumber = '+919384199108';
+const _whatsappNumber = '918670347631';
+const _phoneNumber = '+918670347631';
 const _whatsappChannel = 'https://whatsapp.com/channel/0029Vb6u3BtCHDynkBx33C3A';
 const _youtubeUrl = 'https://www.youtube.com/@LokkhoEducation';
 const _instagramUrl = 'https://www.instagram.com/lokkho.insta';

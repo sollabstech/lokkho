@@ -5,6 +5,7 @@ import '../../data/models/models.dart';
 import '../../services/firestore_service.dart';
 import '../../services/coin_service.dart';
 import '../../../core/utils/helpers.dart';
+import '../home/home_controller.dart';
 
 class StudyMaterialsController extends GetxController {
   final FirestoreService _firestoreService = Get.find<FirestoreService>();
@@ -20,7 +21,18 @@ class StudyMaterialsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _syncClassFromHome();
     loadMaterials();
+  }
+
+  void _syncClassFromHome() {
+    if (!Get.isRegistered<HomeController>()) return;
+    final homeCtrl = Get.find<HomeController>();
+    selectedClass.value = homeCtrl.selectedClass.value;
+    ever(homeCtrl.selectedClass, (String cls) {
+      selectedClass.value = cls;
+      loadMaterials();
+    });
   }
 
   Future<void> loadMaterials() async {

@@ -27,14 +27,34 @@ class HomeTabView extends GetView<HomeController> {
             SliverToBoxAdapter(child: _buildStreakAndQuote()),
             SliverToBoxAdapter(child: _buildSubjectSlider()),
             SliverToBoxAdapter(child: _buildQuickActions()),
-            SliverToBoxAdapter(child: _buildTrendingVideosTitle()),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, i) => _buildVideoCard(controller.videos[i]),
-                childCount: controller.videos.length,
-              ),
+            SliverToBoxAdapter(
+              child: Obx(() {
+                final videos = controller.filteredVideos;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTrendingVideosTitle(),
+                    if (videos.isEmpty)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 40),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Text('📭', style: TextStyle(fontSize: 48)),
+                              SizedBox(height: 12),
+                              Text('No videos for this class',
+                                  style: TextStyle(color: Colors.white70, fontSize: 14)),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      ...videos.map((v) => _buildVideoCard(v)),
+                    const SizedBox(height: 100),
+                  ],
+                );
+              }),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 100)),
           ],
         ),
       ),
@@ -46,71 +66,210 @@ class HomeTabView extends GetView<HomeController> {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: Obx(() {
         final user = controller.currentUser;
-        return Row(
+        final selectedClass = controller.selectedClass.value;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    controller.greeting,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 13,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    user?.name.split(' ').first ?? 'Student',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Notification bell
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                margin: const EdgeInsets.only(right: 12),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.white12),
-                ),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const Icon(
-                      Icons.notifications_outlined,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                    Positioned(
-                      top: -2,
-                      right: -2,
-                      child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: AppColors.accentRed,
-                          shape: BoxShape.circle,
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        controller.greeting,
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 13,
                         ),
                       ),
+                      const SizedBox(height: 2),
+                      Text(
+                        user?.name.split(' ').first ?? 'Student',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Notification bell
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: Colors.white12),
                     ),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        const Icon(
+                          Icons.notifications_outlined,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        Positioned(
+                          top: -2,
+                          right: -2,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: AppColors.accentRed,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Coin badge
+                Obx(() => CoinBadge(coins: controller.currentUser?.coins ?? 0)),
+              ],
+            ),
+            const SizedBox(height: 12),
+            // Class selector pill
+            GestureDetector(
+              onTap: _showClassPicker,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                decoration: BoxDecoration(
+                  gradient: selectedClass.isNotEmpty ? AppColors.primaryGradient : null,
+                  color: selectedClass.isEmpty ? Colors.white.withOpacity(0.08) : null,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: selectedClass.isNotEmpty
+                        ? Colors.transparent
+                        : Colors.white.withOpacity(0.2),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('🎓', style: TextStyle(fontSize: 14)),
+                    const SizedBox(width: 6),
+                    Text(
+                      selectedClass.isEmpty ? 'All Classes' : selectedClass,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.keyboard_arrow_down, color: Colors.white70, size: 16),
                   ],
                 ),
               ),
             ),
-            // Coin badge
-            Obx(() => CoinBadge(coins: controller.currentUser?.coins ?? 0)),
           ],
         );
       }),
+    );
+  }
+
+  void _showClassPicker() {
+    Get.bottomSheet(
+      Container(
+        decoration: const BoxDecoration(
+          color: Color(0xFF1A1A35),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.white24,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Select Class',
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 16),
+            Obx(() {
+              final selected = controller.selectedClass.value;
+              return Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  // All Classes option
+                  GestureDetector(
+                    onTap: () {
+                      controller.setSelectedClass('');
+                      Get.back();
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      decoration: BoxDecoration(
+                        gradient: selected.isEmpty ? AppColors.primaryGradient : null,
+                        color: selected.isEmpty ? null : Colors.white.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: selected.isEmpty ? Colors.transparent : Colors.white12,
+                        ),
+                      ),
+                      child: Text(
+                        'All Classes',
+                        style: TextStyle(
+                          color: selected.isEmpty ? Colors.white : AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ...AppSubjects.classes.map((cls) {
+                    final isSelected = selected == cls;
+                    return GestureDetector(
+                      onTap: () {
+                        controller.setSelectedClass(cls);
+                        Get.back();
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        decoration: BoxDecoration(
+                          gradient: isSelected ? AppColors.primaryGradient : null,
+                          color: isSelected ? null : Colors.white.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isSelected ? Colors.transparent : Colors.white12,
+                          ),
+                        ),
+                        child: Text(
+                          cls,
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              );
+            }),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
     );
   }
 

@@ -12,6 +12,7 @@ class HomeController extends GetxController {
 
   final currentTabIndex = 0.obs;
   final selectedSubject = ''.obs;
+  final selectedClass = ''.obs;
   final isLoading = false.obs;
 
   UserModel? get currentUser => _authService.currentUser.value;
@@ -69,6 +70,15 @@ class HomeController extends GetxController {
       userClass: 'Class 10',
     ),
   ].obs;
+
+  List<VideoModel> get filteredVideos {
+    if (selectedClass.value.isEmpty) return videos;
+    return videos.where((v) => v.userClass == selectedClass.value).toList();
+  }
+
+  void setSelectedClass(String cls) {
+    selectedClass.value = cls;
+  }
 
   void changeTab(int index) {
     currentTabIndex.value = index;

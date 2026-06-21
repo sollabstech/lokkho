@@ -9,6 +9,7 @@ import '../../services/coin_service.dart';
 import '../../services/firestore_service.dart';
 import '../../routes/app_routes.dart';
 import '../../../core/utils/helpers.dart';
+import '../home/home_controller.dart';
 
 class TestController extends GetxController {
   final FirestoreService _firestoreService = Get.find<FirestoreService>();
@@ -37,7 +38,18 @@ class TestController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _syncClassFromHome();
     loadTests();
+  }
+
+  void _syncClassFromHome() {
+    if (!Get.isRegistered<HomeController>()) return;
+    final homeCtrl = Get.find<HomeController>();
+    selectedClass.value = homeCtrl.selectedClass.value;
+    ever(homeCtrl.selectedClass, (String cls) {
+      selectedClass.value = cls;
+      loadTests();
+    });
   }
 
   @override

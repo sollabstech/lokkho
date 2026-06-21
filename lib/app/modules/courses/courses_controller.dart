@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../home/home_controller.dart';
 
 class CourseModel {
   final String id;
@@ -79,6 +80,17 @@ class CoursesController extends GetxController {
       final classMatch = selectedClass.value.isEmpty || c.userClass == selectedClass.value;
       return tabMatch && subjectMatch && classMatch;
     }).toList();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (!Get.isRegistered<HomeController>()) return;
+    final homeCtrl = Get.find<HomeController>();
+    selectedClass.value = homeCtrl.selectedClass.value;
+    ever(homeCtrl.selectedClass, (String cls) {
+      selectedClass.value = cls;
+    });
   }
 
   void setTab(int index) => selectedTab.value = index;

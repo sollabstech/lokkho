@@ -101,3 +101,37 @@ RELEASE_KEY_PASSWORD=...
 ## Coin Economy Logic
 
 Tests cost coins to start (deducted by `CoinService`). Rewards: +5 daily login, +2 per video watched, variable completion bonus based on accuracy. All coin events are logged as `CoinHistoryModel` documents in Firestore under the user's sub-collection.
+
+---
+
+## Machine-Specific Build Notes (Windows Dev Machine)
+
+### Connected Device
+- **Motorola Edge 60 Pro** — device ID `ZA223977L7`, Android 16 (API 36), arm64
+- Connect via USB, enable USB debugging, run `adb devices` to confirm before `flutter run -d ZA223977L7`
+
+### Known Gradle Build Error — "Unable to establish loopback connection"
+**Root cause:** Java's `WEPollSelectorImpl` (used internally by Gradle's daemon protocol) fails on this machine because its Unix domain socket pipe implementation is broken on Windows 11 Build 26200 (Insider Dev channel). This affects both JBR 21 (Android Studio) and Temurin JDK 17.
+
+**Affected files already patched:**
+- `android/gradle.properties` — has `org.gradle.daemon=false` and custom `jvmargs` with `-Djava.io.tmpdir=C:/gradle_home/tmp`
+- `android/gradlew.bat` — `DEFAULT_JVM_OPTS` set to `-Djava.io.tmpdir=C:\gradle_home\tmp`
+- `android/gradlew` — `DEFAULT_JVM_OPTS` set with same tmpdir
+
+**Workaround directory:** `C:\gradle_home\` — created to avoid the 8.3 short-path issue (`DRRADI~1`) with Unix domain sockets on Windows.
+- `C:\gradle_home\tmp\` — clean tmpdir for Java (no spaces, no 8.3 short names)
+- `C:\gradle_home\jdk17\jdk-17.0.12+7\` — Adoptium Temurin JDK 17 (downloaded)
+
+**Status as of 2026-06-14:** The loopback error is NOT yet fully resolved. The daemon JVM gets the correct tmpdir but the Gradle wrapper's selector still fails. Options still to try:
+1. `flutter config --jdk-dir "C:\gradle_home\jdk17\jdk-17.0.12+7"` then run again (JDK 11 would be better — JDK 11 predates WEPoll entirely)
+2. Run/build directly from **Android Studio** (its own Gradle runner may bypass the issue)
+3. Downgrade Windows Insider build or switch back to stable Windows channel
+
+### JDK Path
+- Android Studio JBR: `C:\Program Files\Android\Android Studio\jbr\`
+- Temurin JDK 17 (downloaded): `C:\gradle_home\jdk17\jdk-17.0.12+7\`
+- Configure Flutter to use a specific JDK: `flutter config --jdk-dir "C:\path\to\jdk"`
+
+### Android SDK
+- Located at `C:\Android\sdk`
+- `ANDROID_HOME` and `ANDROID_SDK_ROOT` both point there
