@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.lokkho"
+    namespace = "com.lokkho.lokkho"
     compileSdk = 36
     ndkVersion = "28.2.13676358"
 
@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.sollabstech.lokkho"
+        applicationId = "com.lokkho.lokkho"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutter.versionCode
