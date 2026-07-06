@@ -5,7 +5,13 @@
       "Bash(Select-String -Pattern \"warning|error\")",
       "Bash(flutter run *)",
       "Bash(flutter pub *)",
-      "WebFetch(domain:www.youtube.com)"
+      "WebFetch(domain:www.youtube.com)",
+      "Bash(mkdir -p \"C:/Users/Dr Radika/.claude/projects/C--Users-Dr-Radika-Desktop-lokkho/memory\")",
+      "Bash(flutter config *)",
+      "Bash(git restore *)",
+      "Bash(flutter build *)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\gradle_home\\\\jdk11\\\\jdk-11.0.24+8\"; cd \"C:\\\\Users\\\\Dr Radika\\\\Desktop\\\\lokkho\"; flutter build apk --release 2>&1)",
+      "PowerShell(flutter config --jdk-dir \"C:\\\\gradle_home\\\\jdk17\\\\jdk-17.0.12+7\" 2>&1)"
     ]
   }
 }
