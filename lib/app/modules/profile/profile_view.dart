@@ -263,6 +263,13 @@ class ProfileView extends GetView<ProfileController> {
               onTap: controller.logout,
               color: AppColors.accentRed,
             ),
+            _Divider(),
+            _MenuItem(
+              icon: Icons.delete_forever_rounded,
+              label: 'Delete Account',
+              onTap: controller.deleteAccount,
+              color: const Color(0xFFFF4444),
+            ),
           ],
         ),
       ),

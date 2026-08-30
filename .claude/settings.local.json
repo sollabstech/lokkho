@@ -11,7 +11,8 @@
       "Bash(git restore *)",
       "Bash(flutter build *)",
       "PowerShell($env:JAVA_HOME = \"C:\\\\gradle_home\\\\jdk11\\\\jdk-11.0.24+8\"; cd \"C:\\\\Users\\\\Dr Radika\\\\Desktop\\\\lokkho\"; flutter build apk --release 2>&1)",
-      "PowerShell(flutter config --jdk-dir \"C:\\\\gradle_home\\\\jdk17\\\\jdk-17.0.12+7\" 2>&1)"
+      "PowerShell(flutter config --jdk-dir \"C:\\\\gradle_home\\\\jdk17\\\\jdk-17.0.12+7\" 2>&1)",
+      "PowerShell(& \"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\\\\bin\\\\keytool.exe\" -list -keystore \"C:\\\\Users\\\\sollabstech\\\\Desktop\\\\flutte.jks\" -storepass changeit 2>&1)"
     ]
   }
 }

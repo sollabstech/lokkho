@@ -74,6 +74,51 @@ class ProfileController extends GetxController {
     );
   }
 
+  Future<void> deleteAccount() async {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: const Color(0xFF1A1A35),
+        title: const Text(
+          'Delete Account',
+          style: TextStyle(color: Color(0xFFFF4444), fontWeight: FontWeight.w700),
+        ),
+        content: const Text(
+          'This will permanently delete your account and ALL associated data:\n\n• Test history & scores\n• Coin balance & history\n• Profile information\n\nThis action cannot be undone.',
+          style: TextStyle(color: Color(0xFFB0B0C8)),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Cancel', style: TextStyle(color: Colors.white70)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF4444)),
+            onPressed: () async {
+              Get.back();
+              Get.dialog(
+                const Center(child: CircularProgressIndicator(color: Color(0xFF6C63FF))),
+                barrierDismissible: false,
+              );
+              try {
+                await _authService.deleteAccount();
+                Get.offAllNamed(Routes.auth);
+              } catch (e) {
+                if (Get.isDialogOpen ?? false) Get.back();
+                Get.snackbar(
+                  'Error',
+                  'Could not delete account. Please try again.',
+                  backgroundColor: const Color(0xFF1A1A35),
+                  colorText: Colors.white,
+                );
+              }
+            },
+            child: const Text('Delete Account', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
   void customerSupport() {
     Get.bottomSheet(
       Container(

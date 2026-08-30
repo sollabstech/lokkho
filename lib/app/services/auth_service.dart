@@ -98,6 +98,26 @@ class AuthService extends GetxService {
     debugPrint('[AUTH] signOut complete');
   }
 
+  Future<void> deleteAccount() async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) throw Exception('Re-authentication cancelled');
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await user.reauthenticateWithCredential(credential);
+    await _firestoreService.deleteAllUserData(user.uid);
+    await user.delete();
+    await _googleSignIn.signOut();
+    currentUser.value = null;
+  }
+
   Future<void> refreshUser() async {
     if (firebaseUser.value != null) {
       final userData = await _firestoreService.getUser(firebaseUser.value!.uid);

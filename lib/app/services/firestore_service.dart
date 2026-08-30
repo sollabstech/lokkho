@@ -26,6 +26,26 @@ class FirestoreService extends GetxService {
     await _db.collection('users').doc(uid).update(data);
   }
 
+  Future<void> deleteAllUserData(String uid) async {
+    final userRef = _db.collection('users').doc(uid);
+
+    final coinHistory = await userRef.collection('coinHistory').get();
+    for (final doc in coinHistory.docs) {
+      await doc.reference.delete();
+    }
+
+    final testHistory = await userRef.collection('testHistory').get();
+    for (final doc in testHistory.docs) {
+      await doc.reference.delete();
+    }
+
+    for (final period in ['weekly', 'monthly', 'all_time']) {
+      await _db.collection('leaderboard').doc(period).collection('users').doc(uid).delete();
+    }
+
+    await userRef.delete();
+  }
+
   // Coin History
   Future<List<CoinHistoryModel>> getCoinHistory(String uid) async {
     try {
