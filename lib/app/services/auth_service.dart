@@ -40,6 +40,7 @@ class AuthService extends GetxService {
   Future<UserModel?> signInWithGoogle() async {
     try {
       debugPrint('[AUTH] signInWithGoogle — step 1: launching Google picker');
+      await _googleSignIn.signOut();
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {

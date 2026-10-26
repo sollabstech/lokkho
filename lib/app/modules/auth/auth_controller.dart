@@ -15,7 +15,13 @@ class AuthController extends GetxController {
     debugPrint('[AUTH_CTRL] signInWithGoogle button tapped');
     isLoading.value = true;
     try {
-      final user = await _authService.signInWithGoogle();
+      final user = await _authService.signInWithGoogle().timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          debugPrint('[AUTH_CTRL] Sign-in timed out after 15s');
+          return null;
+        },
+      );
       if (user != null) {
         debugPrint('[AUTH_CTRL] Sign-in success. User: ${user.name}');
         AppHelpers.showSuccessSnackbar(
@@ -31,16 +37,19 @@ class AuthController extends GetxController {
           Get.offAllNamed(Routes.classSelect);
         }
       } else {
-        debugPrint('[AUTH_CTRL] Sign-in returned null (user cancelled)');
+        debugPrint('[AUTH_CTRL] Sign-in returned null (user cancelled or timed out)');
         AppHelpers.showErrorSnackbar(
           'Sign In Failed',
-          'Could not sign in with Google. Please try again.',
+          'Could not sign in with Google. Please check your internet connection and try again.',
         );
       }
     } catch (e, stackTrace) {
       debugPrint('[AUTH_CTRL] Sign-in exception: $e');
       debugPrint('[AUTH_CTRL] StackTrace: $stackTrace');
-      AppHelpers.showErrorSnackbar('Error', e.toString());
+      final message = e.toString().contains('network_error')
+          ? 'Network error. Please check your internet connection and try again.'
+          : 'Sign in failed. Please try again.';
+      AppHelpers.showErrorSnackbar('Sign In Failed', message);
     } finally {
       isLoading.value = false;
       debugPrint('[AUTH_CTRL] signInWithGoogle complete, isLoading=false');

@@ -32,6 +32,14 @@ analyzer:
     prefer_typing_uninitialized_variables: ignore
     strict_top_level_inference: ignore
     sized_box_for_whitespace: ignore
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
